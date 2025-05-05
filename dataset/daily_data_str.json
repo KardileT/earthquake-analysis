@@ -1,0 +1,23 @@
+{
+	"name": "daily_data_str",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "daily.json",
+				"folderPath": {
+					"value": "bronze-layer/daily_data/@{formatDateTime(utcNow(),'yyyyMMdd')}",
+					"type": "Expression"
+				},
+				"fileSystem": "earthquake-analysis"
+			}
+		},
+		"schema": {}
+	}
+}
