@@ -106,43 +106,64 @@
 					"isSequential": true,
 					"activities": [
 						{
-							"name": "Append variable1",
-							"type": "AppendVariable",
+							"name": "Copy data2",
+							"type": "Copy",
 							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
 							"userProperties": [],
 							"typeProperties": {
-								"variableName": "URL_Path",
-								"value": {
-									"value": "@item().properties.detail",
-									"type": "Expression"
+								"source": {
+									"type": "RestSource",
+									"httpRequestTimeout": "00:01:40",
+									"requestInterval": "00.00:00:00.010",
+									"requestMethod": "GET",
+									"paginationRules": {
+										"supportRFC5988": "true"
+									}
+								},
+								"sink": {
+									"type": "JsonSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "JsonWriteSettings"
+									}
+								},
+								"enableStaging": false
+							},
+							"inputs": [
+								{
+									"referenceName": "daily_detail",
+									"type": "DatasetReference",
+									"parameters": {
+										"ids": {
+											"value": "@item().id",
+											"type": "Expression"
+										}
+									}
 								}
-							}
+							],
+							"outputs": [
+								{
+									"referenceName": "daily_detail_str",
+									"type": "DatasetReference",
+									"parameters": {
+										"id": {
+											"value": "@item().id",
+											"type": "Expression"
+										}
+									}
+								}
+							]
 						}
 					]
-				}
-			},
-			{
-				"name": "Set variable1",
-				"type": "SetVariable",
-				"dependsOn": [
-					{
-						"activity": "ForEach1",
-						"dependencyConditions": [
-							"Succeeded"
-						]
-					}
-				],
-				"policy": {
-					"secureOutput": false,
-					"secureInput": false
-				},
-				"userProperties": [],
-				"typeProperties": {
-					"variableName": "Path",
-					"value": {
-						"value": "@variables('URL_Path')",
-						"type": "Expression"
-					}
 				}
 			}
 		],
@@ -151,6 +172,9 @@
 				"type": "Array"
 			},
 			"Path": {
+				"type": "Array"
+			},
+			"ids": {
 				"type": "Array"
 			}
 		},

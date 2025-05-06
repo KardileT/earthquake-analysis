@@ -1,0 +1,23 @@
+{
+	"name": "monthly_data_str",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "Storage",
+			"type": "LinkedServiceReference"
+		},
+		"annotations": [],
+		"type": "Json",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": "monthly.json",
+				"folderPath": {
+					"value": "bronze-layer/monthly-data/@{formatDateTime(utcNow(),'yyyyMMdd')}",
+					"type": "Expression"
+				},
+				"fileSystem": "earthquake-analysis"
+			}
+		},
+		"schema": {}
+	}
+}
